@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.testtask.hospital_system.grpc";
+
+package hospital;
+
+enum Gender {
+  UNKNOWN = 0;
+  MALE = 1;
+  FEMALE = 2;
+  OTHER = 3;
+}
+
+message HospitalDto {
+  int64 id = 1;
+  string name = 2;
+  string address = 3;
+  int32 capacity = 4;
+}
+
+message PatientDto {
+  int64 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string date_of_birth = 4; // Format: YYYY-MM-DD
+  Gender sex = 5;
+}
+
+// --- Requests & Responses ---
+
+message CreateHospitalRequest {
+  string name = 1;
+  string address = 2;
+  int32 capacity = 3;
+}
+
+message UpdateHospitalRequest {
+  int64 id = 1;
+  string name = 2;
+  string address = 3;
+}
+
+message DeleteHospitalRequest {
+  int64 id = 1;
+}
+
+message HospitalResponse {
+  HospitalDto hospital = 1;
+}
+
+message CreatePatientRequest {
+  string first_name = 1;
+  string last_name = 2;
+  string date_of_birth = 3;
+  Gender sex = 4;
+}
+
+message UpdatePatientRequest {
+  int64 id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string date_of_birth = 4;
+  Gender sex = 5;
+}
+
+message DeletePatientRequest {
+  int64 id = 1;
+}
+
+message PatientResponse {
+  PatientDto patient = 1;
+}
+
+message RegisterPatientRequest {
+  int64 patient_id = 1;
+  int64 hospital_id = 2;
+  string registration_date = 3; // Format: YYYY-MM-DD
+}
+
+message ListPatientsInHospitalRequest {
+  int64 hospital_id = 1;
+}
+
+message ListPatientsResponse {
+  repeated PatientDto patients = 1;
+}
+
+message ListHospitalsForPatientRequest {
+  int64 patient_id = 1;
+}
+
+message ListHospitalsResponse {
+  repeated HospitalDto hospitals = 1;
+}
+
+message DeleteResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message RegistrationResponse {
+  int64 patient_id = 1;
+  int64 hospital_id = 2;
+  string status = 3;
+}
+
+service HospitalService {
+
+  rpc CreateHospital(CreateHospitalRequest) returns (HospitalResponse);
+  rpc UpdateHospital(UpdateHospitalRequest) returns (HospitalResponse);
+  rpc DeleteHospital(DeleteHospitalRequest) returns (DeleteResponse);
+
+  rpc CreatePatient(CreatePatientRequest) returns (PatientResponse);
+  rpc UpdatePatient(UpdatePatientRequest) returns (PatientResponse);
+  rpc DeletePatient(DeletePatientRequest) returns (DeleteResponse);
+
+  rpc RegisterPatient(RegisterPatientRequest) returns (RegistrationResponse);
+  rpc ListPatientsInHospital(ListPatientsInHospitalRequest) returns (ListPatientsResponse);
+  rpc ListHospitalsForPatient(ListHospitalsForPatientRequest) returns (ListHospitalsResponse);
+}
