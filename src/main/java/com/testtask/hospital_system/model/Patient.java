@@ -22,15 +22,15 @@ public class Patient {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Gender sex;
+    private PatientGender gender;
 
     public Patient() {}
 
-    public Patient(String firstName, String lastName, LocalDate dateOfBirth, Gender sex) {
+    public Patient(String firstName, String lastName, LocalDate dateOfBirth, PatientGender gender) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
-        this.sex = sex;
+        this.gender = gender;
     }
 
     public Long getId() { return id; }
@@ -45,6 +45,6 @@ public class Patient {
     public LocalDate getDateOfBirth() { return dateOfBirth; }
     public void setDateOfBirth(LocalDate dateOfBirth) { this.dateOfBirth = dateOfBirth; }
 
-    public Gender getSex() { return sex; }
-    public void setSex(Gender sex) { this.sex = sex; }
+    public PatientGender getGender() { return gender; }
+    public void setGender(PatientGender gender) { this.gender = gender; }
 }

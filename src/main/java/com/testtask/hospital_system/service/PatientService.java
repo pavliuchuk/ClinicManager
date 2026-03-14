@@ -1,6 +1,6 @@
 package com.testtask.hospital_system.service;
 
-import com.testtask.hospital_system.model.Gender;
+import com.testtask.hospital_system.model.PatientGender;
 import com.testtask.hospital_system.model.Patient;
 import com.testtask.hospital_system.repository.PatientRepository;
 import io.grpc.Status;
@@ -20,18 +20,18 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
-    public Patient create(String firstName, String lastName, String dateOfBirth, Gender sex) {
+    public Patient create(String firstName, String lastName, String dateOfBirth, PatientGender sex) {
         Patient patient = new Patient(firstName, lastName, parseDate(dateOfBirth), sex);
         return patientRepository.save(patient);
     }
 
-    public Patient update(Long id, String firstName, String lastName, String dateOfBirth, Gender sex) {
+    public Patient update(Long id, String firstName, String lastName, String dateOfBirth, PatientGender sex) {
         Patient patient = findByIdOrThrow(id);
 
         if (!firstName.isBlank())   patient.setFirstName(firstName);
         if (!lastName.isBlank())    patient.setLastName(lastName);
         if (!dateOfBirth.isBlank()) patient.setDateOfBirth(parseDate(dateOfBirth));
-        if (sex != Gender.UNKNOWN)  patient.setSex(sex);
+        if (sex != PatientGender.UNKNOWN)  patient.setGender(sex);
 
         return patientRepository.save(patient);
     }

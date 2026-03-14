@@ -1,6 +1,6 @@
 package com.testtask.hospital_system.model;
 
-public enum Gender {
+public enum PatientGender {
     UNKNOWN,
     MALE,
     FEMALE,
