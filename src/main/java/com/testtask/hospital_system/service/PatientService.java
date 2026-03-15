@@ -20,18 +20,18 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
-    public Patient create(String firstName, String lastName, String dateOfBirth, PatientGender sex) {
-        Patient patient = new Patient(firstName, lastName, parseDate(dateOfBirth), sex);
+    public Patient create(String firstName, String lastName, String dateOfBirth, PatientGender gender) {
+        Patient patient = new Patient(firstName, lastName, parseDate(dateOfBirth), gender);
         return patientRepository.save(patient);
     }
 
-    public Patient update(Long id, String firstName, String lastName, String dateOfBirth, PatientGender sex) {
+    public Patient update(Long id, String firstName, String lastName, String dateOfBirth, PatientGender gender) {
         Patient patient = findByIdOrThrow(id);
 
-        if (!firstName.isBlank())   patient.setFirstName(firstName);
-        if (!lastName.isBlank())    patient.setLastName(lastName);
-        if (!dateOfBirth.isBlank()) patient.setDateOfBirth(parseDate(dateOfBirth));
-        if (sex != PatientGender.UNKNOWN)  patient.setGender(sex);
+        if (!firstName.isEmpty())   patient.setFirstName(firstName);
+        if (!lastName.isEmpty())    patient.setLastName(lastName);
+        if (!dateOfBirth.isEmpty()) patient.setDateOfBirth(parseDate(dateOfBirth));
+        if (gender != PatientGender.UNKNOWN) patient.setGender(gender);
 
         return patientRepository.save(patient);
     }

@@ -17,11 +17,16 @@ public class RegistrationService {
     private final PatientHospitalRepository patientHospitalRepository;
     private final PatientService patientService;
     private final HospitalService hospitalService;
+    private final AgeStatService ageStatService;
 
-    public RegistrationService(PatientHospitalRepository patientHospitalRepository, PatientService patientService, HospitalService hospitalService) {
+    public RegistrationService(PatientHospitalRepository patientHospitalRepository,
+                               PatientService patientService,
+                               HospitalService hospitalService,
+                               AgeStatService ageStatService) {
         this.patientHospitalRepository = patientHospitalRepository;
         this.patientService = patientService;
         this.hospitalService = hospitalService;
+        this.ageStatService = ageStatService;
     }
 
     /**
@@ -40,6 +45,9 @@ public class RegistrationService {
                 : LocalDate.parse(registrationDate);
 
         patientHospitalRepository.save(new PatientHospital(patient, hospital, date));
+
+        ageStatService.recordRegistration(hospitalId, patient.getDateOfBirth(), patient.getGender(), date);
+
         return true;
     }
 

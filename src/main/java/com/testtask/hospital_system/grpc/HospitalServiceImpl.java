@@ -1,10 +1,13 @@
 package com.testtask.hospital_system.grpc;
 
+import com.testtask.hospital_system.service.AgeStatService;
 import com.testtask.hospital_system.service.HospitalService;
 import com.testtask.hospital_system.service.PatientService;
 import com.testtask.hospital_system.service.RegistrationService;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
+
+import java.util.List;
 
 @GrpcService
 public class HospitalServiceImpl extends HospitalServiceGrpc.HospitalServiceImplBase {
@@ -12,14 +15,17 @@ public class HospitalServiceImpl extends HospitalServiceGrpc.HospitalServiceImpl
     private final HospitalService hospitalService;
     private final PatientService patientService;
     private final RegistrationService registrationService;
+    private final AgeStatService ageStatService;
 
-    public HospitalServiceImpl(HospitalService hospitalService, PatientService patientService, RegistrationService registrationService) {
+    public HospitalServiceImpl(HospitalService hospitalService,
+                               PatientService patientService,
+                               RegistrationService registrationService,
+                               AgeStatService ageStatService) {
         this.hospitalService = hospitalService;
         this.patientService = patientService;
         this.registrationService = registrationService;
+        this.ageStatService = ageStatService;
     }
-
-    // Hospital
 
     @Override
     public void createHospital(CreateHospitalRequest request, StreamObserver<HospitalResponse> responseObserver) {
@@ -42,13 +48,11 @@ public class HospitalServiceImpl extends HospitalServiceGrpc.HospitalServiceImpl
         responseObserver.onCompleted();
     }
 
-    // Patient
-
     @Override
     public void createPatient(CreatePatientRequest request, StreamObserver<PatientResponse> responseObserver) {
         var patient = patientService.create(
                 request.getFirstName(), request.getLastName(),
-                request.getDateOfBirth(), Mapper.toModelGender(request.getSex()));
+                request.getDateOfBirth(), Mapper.toModelGender(request.getGender()));
         responseObserver.onNext(PatientResponse.newBuilder().setPatient(Mapper.toProto(patient)).build());
         responseObserver.onCompleted();
     }
@@ -57,7 +61,7 @@ public class HospitalServiceImpl extends HospitalServiceGrpc.HospitalServiceImpl
     public void updatePatient(UpdatePatientRequest request, StreamObserver<PatientResponse> responseObserver) {
         var patient = patientService.update(
                 request.getId(), request.getFirstName(), request.getLastName(),
-                request.getDateOfBirth(), Mapper.toModelGender(request.getSex()));
+                request.getDateOfBirth(), Mapper.toModelGender(request.getGender()));
         responseObserver.onNext(PatientResponse.newBuilder().setPatient(Mapper.toProto(patient)).build());
         responseObserver.onCompleted();
     }
@@ -68,8 +72,6 @@ public class HospitalServiceImpl extends HospitalServiceGrpc.HospitalServiceImpl
         responseObserver.onNext(DeleteResponse.newBuilder().setSuccess(true).setMessage("Patient deleted").build());
         responseObserver.onCompleted();
     }
-
-    // Registration
 
     @Override
     public void registerPatient(RegisterPatientRequest request, StreamObserver<RegistrationResponse> responseObserver) {
@@ -96,6 +98,14 @@ public class HospitalServiceImpl extends HospitalServiceGrpc.HospitalServiceImpl
         var hospitals = registrationService.listHospitalsForPatient(request.getPatientId())
                 .stream().map(Mapper::toProto).toList();
         responseObserver.onNext(ListHospitalsResponse.newBuilder().addAllHospitals(hospitals).build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getAverageAgeStats(AgeStatRequest request, StreamObserver<AgeStatResponse> responseObserver) {
+        List<AgeStatDto> stats = ageStatService.getAverageAgeStats(request.getHospitalId())
+                .stream().map(Mapper::toProto).toList();
+        responseObserver.onNext(AgeStatResponse.newBuilder().addAllStats(stats).build());
         responseObserver.onCompleted();
     }
 }

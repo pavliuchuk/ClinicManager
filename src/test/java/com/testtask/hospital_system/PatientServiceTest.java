@@ -2,6 +2,8 @@ package com.testtask.hospital_system;
 
 import com.testtask.hospital_system.model.Patient;
 import com.testtask.hospital_system.model.PatientGender;
+import com.testtask.hospital_system.repository.AgeStatRepository;
+import com.testtask.hospital_system.repository.PatientHospitalRepository;
 import com.testtask.hospital_system.repository.PatientRepository;
 import com.testtask.hospital_system.service.PatientService;
 import io.grpc.StatusRuntimeException;
@@ -21,8 +23,16 @@ class PatientServiceTest {
     @Autowired
     private PatientRepository patientRepository;
 
+    @Autowired
+    private PatientHospitalRepository patientHospitalRepository;
+
+    @Autowired
+    private AgeStatRepository ageStatRepository;
+
     @BeforeEach
     void cleanUp() {
+        ageStatRepository.deleteAll();
+        patientHospitalRepository.deleteAll();
         patientRepository.deleteAll();
     }
 

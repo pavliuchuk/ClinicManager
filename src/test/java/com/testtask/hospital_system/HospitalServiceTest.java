@@ -1,7 +1,10 @@
 package com.testtask.hospital_system;
 
 import com.testtask.hospital_system.model.Hospital;
+import com.testtask.hospital_system.repository.AgeStatRepository;
 import com.testtask.hospital_system.repository.HospitalRepository;
+import com.testtask.hospital_system.repository.PatientHospitalRepository;
+import com.testtask.hospital_system.repository.PatientRepository;
 import com.testtask.hospital_system.service.HospitalService;
 import io.grpc.StatusRuntimeException;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,8 +23,20 @@ class HospitalServiceTest {
     @Autowired
     private HospitalRepository hospitalRepository;
 
+    @Autowired
+    private PatientHospitalRepository patientHospitalRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
+
+    @Autowired
+    private AgeStatRepository ageStatRepository;
+
     @BeforeEach
     void cleanUp() {
+        ageStatRepository.deleteAll();
+        patientHospitalRepository.deleteAll();
+        patientRepository.deleteAll();
         hospitalRepository.deleteAll();
     }
 
@@ -43,8 +58,8 @@ class HospitalServiceTest {
         Hospital updated = hospitalService.update(hospital.getId(), "New Name", "", 0);
 
         assertThat(updated.getName()).isEqualTo("New Name");
-        assertThat(updated.getAddress()).isEqualTo("Old Address"); // unchanged
-        assertThat(updated.getCapacity()).isEqualTo(100);          // unchanged
+        assertThat(updated.getAddress()).isEqualTo("Old Address");
+        assertThat(updated.getCapacity()).isEqualTo(100);
     }
 
     @Test

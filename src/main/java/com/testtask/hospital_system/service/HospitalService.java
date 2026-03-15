@@ -14,7 +14,8 @@ public class HospitalService {
     private final HospitalRepository hospitalRepository;
     private final PatientHospitalRepository patientHospitalRepository;
 
-    public HospitalService(HospitalRepository hospitalRepository, PatientHospitalRepository patientHospitalRepository) {
+    public HospitalService(HospitalRepository hospitalRepository,
+                           PatientHospitalRepository patientHospitalRepository) {
         this.hospitalRepository = hospitalRepository;
         this.patientHospitalRepository = patientHospitalRepository;
     }
@@ -27,8 +28,8 @@ public class HospitalService {
     public Hospital update(Long id, String name, String address, int capacity) {
         Hospital hospital = findByIdOrThrow(id);
 
-        if (!name.isBlank())    hospital.setName(name);
-        if (!address.isBlank()) hospital.setAddress(address);
+        if (!name.isEmpty())    hospital.setName(name);
+        if (!address.isEmpty()) hospital.setAddress(address);
         if (capacity > 0)       hospital.setCapacity(capacity);
 
         return hospitalRepository.save(hospital);

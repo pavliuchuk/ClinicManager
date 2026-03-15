@@ -24,10 +24,8 @@ message PatientDto {
   string first_name = 2;
   string last_name = 3;
   string date_of_birth = 4; // Format: YYYY-MM-DD
-  Gender sex = 5;
+  Gender gender = 5;
 }
-
-// --- Requests & Responses ---
 
 message CreateHospitalRequest {
   string name = 1;
@@ -54,7 +52,7 @@ message CreatePatientRequest {
   string first_name = 1;
   string last_name = 2;
   string date_of_birth = 3;
-  Gender sex = 4;
+  Gender gender = 4;
 }
 
 message UpdatePatientRequest {
@@ -62,7 +60,7 @@ message UpdatePatientRequest {
   string first_name = 2;
   string last_name = 3;
   string date_of_birth = 4;
-  Gender sex = 5;
+  Gender gender = 5;
 }
 
 message DeletePatientRequest {
@@ -106,6 +104,22 @@ message RegistrationResponse {
   string status = 3;
 }
 
+message AgeStatRequest {
+  int64 hospital_id = 1;
+}
+
+message AgeStatDto {
+  int32 year = 1;
+  int32 month = 2;
+  string gender = 3;
+  double average_age = 4;
+  int64 patient_count = 5;
+}
+
+message AgeStatResponse {
+  repeated AgeStatDto stats = 1;
+}
+
 service HospitalService {
 
   rpc CreateHospital(CreateHospitalRequest) returns (HospitalResponse);
@@ -119,4 +133,6 @@ service HospitalService {
   rpc RegisterPatient(RegisterPatientRequest) returns (RegistrationResponse);
   rpc ListPatientsInHospital(ListPatientsInHospitalRequest) returns (ListPatientsResponse);
   rpc ListHospitalsForPatient(ListHospitalsForPatientRequest) returns (ListHospitalsResponse);
+
+  rpc GetAverageAgeStats(AgeStatRequest) returns (AgeStatResponse);
 }

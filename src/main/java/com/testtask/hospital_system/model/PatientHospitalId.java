@@ -26,10 +26,9 @@ public class PatientHospitalId implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PatientHospitalId)) return false;
-        PatientHospitalId that = (PatientHospitalId) o;
-        return Objects.equals(patientId, that.patientId) &&
-                Objects.equals(hospitalId, that.hospitalId);
+        return o instanceof PatientHospitalId other
+                && Objects.equals(patientId, other.patientId)
+                && Objects.equals(hospitalId, other.hospitalId);
     }
 
     @Override
