@@ -1,4 +1,16 @@
-# Hospital System
+# Clinic Manager
+
+Clinic Manager is a backend service built to organize and link medical centers with their patients. Developed using Spring Boot and gRPC, this project focuses on efficient data handling and fast communication.
+
+## Project Overview
+
+This system serves for managing patients data. It allows users to track multiple clinics, register patients across different locations.
+
+**Fast Communication**: Uses gRPC for low-latency, contract-first API design.
+
+**Smart Storage**: Built with Hibernate and JPA to manage complex relationships between patients and facilities.
+
+**In-Memory Speed**: Configured with an H2 database for rapid development and testing.
 
 ## Registration Design
 
